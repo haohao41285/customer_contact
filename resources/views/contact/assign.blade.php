@@ -21,7 +21,7 @@
 <body>
 	<div class="container">
 		<div class="">
-			<h4 class="text-center">Assign Contact</h4>
+			<h4 class="text-center text-decoration-underline">Assign Contact</h4>
 			<fieldset style="border:1px grey solid;border-radius:10px;min-width:auto;padding:5px;margin:auto">
     			<legend>Customer Information:</legend>
 				<p>Name: <b>{{ $customer_info->name }}</b></p>
