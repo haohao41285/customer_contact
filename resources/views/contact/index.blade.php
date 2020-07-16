@@ -25,7 +25,11 @@
 				@csrf
 				<div class="form-group">
 				    <label for="name">Name</label>
-				    <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name">
+				    <input type="text" required class="form-control" name="name" id="name" placeholder="Enter Name">
+			   </div>
+				<div class="form-group">
+				    <label for="company">Company</label>
+				    <input type="text" class="form-control" name="company" id="company" placeholder="Enter Your Company">
 			   </div>
 			   <div class="form-group">
 				    <label for="email">Email</label>
@@ -33,7 +37,7 @@
 				</div>
 			    <div class="form-group">
 				    <label for="phone">Phone</label>
-				    <input type="number" onkeypress="return isNumberKey(event)" name="phone" class="form-control" id="phone" placeholder="Enter Phone">
+				    <input type="number" onkeypress="return isNumberKey(event)" name="phone" class="form-control" id="phone" placeholder="Enter Phone" required>
 			    </div>
 			    <button type="submit" class="btn btn-primary btn-sm float-right">Submit</button>
 			</form>

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "mindful-audio-283502",
+  "private_key_id": "d02a46c045377ad854ce1fc2473858835b7eaba8",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1o2+2ogDzIp5/\nA+00wa776X5fAY7OV+LI7zxjtFc2Fod+bJyCimAbMf/yCpkCzVXy3V342kSlsMnh\nnaiHijMFBbsn7Qyc74KEn8K2X16kCCkcGIXMa4RH7I0KN3RZDsIPCXIB2RARks5K\nfaoS0lS5GjTY5Mbz6zytNQKfwLhOOPKwWPRLNlxjPfjggb+Eyp9mPtl4aPU3esXT\nFOxY6VKh+jD+7HwcIu6PWO9MRVb6jgNihIvX0aVVcSPxj1t1k9ukHrWvAdo7ZXQB\nugyaA0Ys2bwEZyCoeR/fJHcMDLqVfl7NxfBOfEYoDrcb3zc6+F6W48AA1lKciDZM\nF/eVRuiHAgMBAAECggEAToGzeTaQPoZKBxAFaHYGUa9cBWhA9wKZbMuqSFXcE+6s\n5YHAK9PvMhHsVAsskz941J3FThfY79x3hWKFQwACiTsu51TXzMTgnr4GhJi36SH1\n0sTun6og5I1jcHUDfrKYQbONaSsOfOn868lgxv3NzKt9B/np2+ditGJjHfVIM9ZC\nK2gu24d8WIM8Qj1NnHgeORbWUi+w8XvdozthYfomfD8CwU0ey0M4aVtIRXDpEZGf\n/ujnTolcsLpmmWe0YQ7xtvUC03kbCyGEdQudPFKMqsPHN5veDapA+aOC9MP0LAV9\nYUVhnCrjDiE8B5BLwIOys6MSQCYBpburA20ZpZnFsQKBgQDsf8n5rxxudpetwO3F\nG1Nf/rZswP0harQ79eJiA/DQrgvBuAq/YbMuxJHiCoO4Q7DHPE+3uRlO5LPEQk70\ncUuUsZF8MlEBwGPwAr1R4ZDvwJZqVTG93VGepi9vM+vsBuAmKXAEstVmkNSR+LlW\npNkjcF2hOEFY3Ku3PJswaeNVawKBgQDEnZp48L6h4bxkfNmyIYv5R5D2Js0Goo/+\nzRVJ/WHYmiNU+XwQH8QuhBaDls7PcN7Y+8aMp8v+EdEQVf4/ttX/kbKkbx3s2WPQ\nCJpFVxz+zNppD687/X28cCL0W0rJiEt1w/8iDgcTteqTiKfc2wemYQR8Rp5ShPpw\nt4g6X/mkVQKBgBUAlDM0NdYpefbYN0VV0+WmfRTTXqdlDnR0tZH2v6AIlMqzSWEN\nkBgLJNlqDaCDgmNvG7U5HuI+tSgsq05R8WBXFJBu93qsVzOtSprG6VQhSjpPLoep\n6+Gm6Hd7qOvhAG7jJyuDpifhnL8J04u6P/5BsE7s7AC0OBuhqjZ2cNXZAoGAPWcG\n3ew5bK7lufAvwGyvnRsXj3gQoZjVJXsAwgmqrA1/KUN81kBFcU15BoFrdudGATeo\nCzdAAsmno9VnQJil/lmPE8FL9DLz8/0ryKnq+TwanaLzU+XXhajzkaKNGaFCB7Y9\nEHKXDTXL22VbHyMcIX68+t7HBPhYiikXFzvv570CgYEAxdVv3tKubf4m0X8iZHih\nOCNQctUXFV8lsM6NLZicpdQd8X3ab8Jaq2fy9aSvMFAVUW3pBBZkfhM4wpbFI/iu\ns1+KVaLma3X5uVmCjAlQ8vRn/gIItxHlrxyd7v0gdNqBG8qzh2Y0rGuobguOBPNG\nExMmUAp8rJRM9dMVG0Mt3tY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "phpsheets@mindful-audio-283502.iam.gserviceaccount.com",
+  "client_id": "102949666501290041639",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/phpsheets%40mindful-audio-283502.iam.gserviceaccount.com"
+}
