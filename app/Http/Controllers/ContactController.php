@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendContactMail;
 use Carbon\Carbon;
 use DB;
 use Google_Client;
@@ -41,7 +42,7 @@ class ContactController extends Controller {
 
 		$values = [
 			[
-				intval(date('m')), $customer_id, $request->name, '', '<input type="checkbox" >', $request->company,
+				intval(date('m')), $customer_id, $request->name, '', '', $request->company,
 			],
 		];
 		self::appendRow($values);
@@ -78,11 +79,11 @@ class ContactController extends Controller {
 			$input['reciever_email'] = $staff_info->email;
 			$input['subject'] = 'THÔNG BÁO KHÁCH HÀNG MỚI ĐƯỢC CHỈ ĐỊNH';
 			$input['view'] = 'email.assign_contact';
-			$input['route'] = route('contact.finish', $customer_info->_token);
+			$input['route'] = route('contact.finish', [$request->id, $customer_info->_token]);
 			// $input['customer_id'] = $resutlt->id;
 			$time = Carbon::now()->addSeconds(5);
-			// SendContactMail::dispatch($input)
-			// ->delay($time);
+			SendContactMail::dispatch($input)
+				->delay($time);
 			DB::commit();
 
 		} catch (\Exception $e) {
@@ -95,14 +96,62 @@ class ContactController extends Controller {
 		];
 		$id = intval($request->id) + 1;
 
-		self::updateRow($values, $id);
+		$range = "H" . $id . ":" . "I" . $id;
+		self::updateRow($values, $id, $range);
 		// return $id;
-		self::colorLine($id);
+		self::colorLine($id, $a = 0.5, $b = 0.5, $r = 0.5, $g = 1);
 		return 'asssign successfully!';
 
 	}
-	public function finish($token) {
-		return $token;
+	public function finish($contact, $token) {
+		//Check _token and contact_id
+		$contact_info = DB::table('contacts')->where([['id', $contact], ['_token', $token]])->first();
+		if (!$contact_info) {
+			return 'Not existed Contact!';
+		}
+
+		if ($contact_info->status != 0) {
+			return 'This customer has been taken care of';
+		}
+		return view('contact.complete', compact('contact_info'));
+
+	}
+	public function finishPost(Request $request) {
+		DB::beginTransaction();
+		try {
+			//Check contact
+			$contact_info = DB::table('contacts')->where([['id', $request->id], ['_token', $request->token]]);
+			if (!$contact_info) {
+				return 'Not existed Contact';
+			}
+			//Save Contact
+			$contact_info->update(['status' => $request->status, 'note' => $request->note]);
+			DB::commit();
+			// return 'successfully update contact';
+		} catch (\Exception $e) {
+			DB::rollBack();
+			\Log::info($e);
+			return 'error';
+		}
+
+		//Change backgroundColor google sheet
+		if ($request->status == 2) {
+			$a = 1;
+			$r = 0.5;
+		} else {
+			$a = 0.5;
+			$r = 1;
+		}
+
+		$line = intval($request->id) + 1;
+		self::colorLine($line, $a, $b = 0.5, $r);
+		$range = "E" . $line;
+		$status = $request->status == 1 ? "DONE" : "FAIL";
+		$values = [
+			[$status],
+		];
+		self::updateRow($values, $line, $range);
+		return 'successfully update contact';
 	}
 
 	public static function getClient() {
@@ -127,9 +176,8 @@ class ContactController extends Controller {
 		printf("%d cells appended.", $result->getUpdates()->getUpdatedCells());
 	}
 
-	public static function updateRow($values, $id) {
+	public static function updateRow($values, $id, $range) {
 		$sheets = self::getClient();
-		$range = "H" . $id . ":" . "I" . $id;
 		$spreadsheetId = '1VREBsR7k8HQtYEoLg2oXhvWwkb5eRhLlPe7GG5FtszU';
 		$body = new \Google_Service_Sheets_ValueRange([
 			'values' => $values,
@@ -145,17 +193,13 @@ class ContactController extends Controller {
 		);
 	}
 
-	public static function colorLine($line) {
+	public static function colorLine($line, $a = 0.5, $b = 0.5, $r = 0.5, $g = 0.5) {
 		$service = self::getClient();
 		$spreadsheetId = '1VREBsR7k8HQtYEoLg2oXhvWwkb5eRhLlPe7GG5FtszU';
 
 		// get sheetId of sheet with index 0
 		$sheetId = $service->spreadsheets->get($spreadsheetId);
 		$sheetId = $sheetId->sheets[0]->properties->sheetId;
-
-		// set colour to a medium gray
-		$b = $a = $r = 0.5;
-		$g = 1;
 
 		// define range
 		$myRange = [
@@ -200,6 +244,16 @@ class ContactController extends Controller {
 
 		// run batchUpdate
 		$result = $service->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
+	}
+
+	public function confirmFromSheets(Request $request) {
+		$input['reciever_email'] = 'thieuhao2525@gmail.com';
+		$input['subject'] = 'kHÁCH HÀNG ĐÃ ĐƯỢC TƯ VẤN';
+		$input['view'] = 'email.confirm';
+		// $input['customer_id'] = $resutlt->id;
+		$time = Carbon::now()->addSeconds(5);
+		SendContactMail::dispatch($input)
+			->delay($time);
 	}
 
 }
