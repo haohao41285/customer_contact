@@ -11,4 +11,4 @@
 |
  */
 
-Route::get('contact', 'ContactController@saveContact');
+Route::post('/contact', 'ContactController@saveContact');

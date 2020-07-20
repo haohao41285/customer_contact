@@ -8,6 +8,7 @@ use DB;
 use Google_Client;
 use Google_Service_Sheets;
 use Illuminate\Http\Request;
+use Mail;
 
 class ContactController extends Controller {
 
@@ -28,27 +29,31 @@ class ContactController extends Controller {
 				$input['subject'] = 'kHÁCH HÀNG MỚI ĐĂNG KÍ';
 				$input['view'] = 'email.new_contact';
 				$input['route'] = route('contact.assgin', $customer_id);
+				Mail::send($input['view'], $input, function ($m) use($input) {
+					$m->from(env('MAIL_USERNAME'));
+					$m->to($input['reciever_email'], 'admin')->subject($input['subject']);
+					$m->cc('nguyenthieupro93@gmail.com','thieusumo');
+				});
 				// $input['customer_id'] = $resutlt->id;
 				$time = Carbon::now()->addSeconds(5);
-				// SendContactMail::dispatch($input)
-				// ->delay($time);
+				// SendContactMail::dispatch($input)->delay($time);
+
+				$values = [
+					[
+						intval(date('m')), $customer_id, $request->name, '', 'PENDING', $request->company,
+					],
+				];
+				self::appendRow($values);
+				$id = $customer_id + 1;
+				self::colorLine($id, $a = 0.5, $b = 0.5, $r = 0.5, $g = 1);
 				DB::commit();
+				return 'insert successfully';
 			}
 		} catch (\Exception $e) {
 			DB::rollBack();
 			\Log::info($e);
 			return 'error';
 		}
-
-		$values = [
-			[
-				intval(date('m')), $customer_id, $request->name, '', '', $request->company,
-			],
-		];
-		self::appendRow($values);
-
-		return 'insert successfully';
-
 	}
 	public function assgin($customer_id) {
 		$customer_info = DB::table('contacts')->where('id', $customer_id)->first();
@@ -84,6 +89,14 @@ class ContactController extends Controller {
 			$time = Carbon::now()->addSeconds(5);
 			SendContactMail::dispatch($input)
 				->delay($time);
+			$values = [
+				[$staff_info->name, now()],
+			];
+			$id = intval($request->id) + 1;
+
+			$range = "H" . $id . ":" . "I" . $id;
+			self::updateRow($values, $id, $range);
+			return 'asssign successfully!';
 			DB::commit();
 
 		} catch (\Exception $e) {
@@ -91,16 +104,7 @@ class ContactController extends Controller {
 			DB::rollBack();
 			return 'asssign falied';
 		}
-		$values = [
-			[$staff_info->name, now()],
-		];
-		$id = intval($request->id) + 1;
-
-		$range = "H" . $id . ":" . "I" . $id;
-		self::updateRow($values, $id, $range);
-		// return $id;
-		self::colorLine($id, $a = 0.5, $b = 0.5, $r = 0.5, $g = 1);
-		return 'asssign successfully!';
+		
 
 	}
 	public function finish($contact, $token) {
